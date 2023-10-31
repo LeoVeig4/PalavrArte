@@ -1,2 +1,2 @@
-# PalavrArte
-Este é um trabalho de Gerencia de Banco de dados 
+# smart-nutri
+Um aplicativo sobre competições de literatura

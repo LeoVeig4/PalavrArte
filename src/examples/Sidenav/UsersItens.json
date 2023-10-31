@@ -1,0 +1,26 @@
+{
+    "admin_list": [
+        {
+            "navText": "Dashboard",
+            "url": "/admin/dashboard-default",
+            "icon": "ni ni-tv-2 text-primary text-sm opacity-10"
+        },
+        {
+            "navText": "Receitas",
+            "url": "/admin/receitas",
+            "icon": "fas fa-utensils text-dark text-sm opacity-10"
+        },
+        {
+            "navText": "Ingredientes",
+            "url": "/admin/ingredientes",
+            "icon": "fas fa-carrot text-dark text-sm opacity-10"
+        }
+    ],
+    
+    "bolsista_list": [
+        1, 2, 3
+    ],
+    "feirante_list": [
+        1, 2, 3
+    ]
+}
