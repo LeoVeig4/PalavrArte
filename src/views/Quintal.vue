@@ -8,7 +8,7 @@
   </div>
   <main class="main-content mt-0">
     <div class="page-header align-items-start vh-100 pt-5 pb-11 m-3 border-radius-lg" style="
-        background-image: linear-gradient(rgba(0, 0, 0, 0.69),rgba(0, 0, 0, 0)) , url('image/book_shelf.jpg');
+    background-image: linear-gradient(rgba(0, 0, 0, 0.7),rgba(0, 0, 0, 0.3)) , url('image/book_shelf.jpg');
         background-position: top; background-size: cover;
       ">
       <span class="mask bg-gradient-dark opacity-6"></span>
@@ -25,80 +25,39 @@
         </div>
       </div>
     </div>
+    <div class="d-flex flex-wrap justify-content-center mt-n5">
+      <texto-card :index="index" :texto="texto" v-for="(texto, index) in textos" />
+    </div>
 
-    <div class="d-flex flex-wrap justify-content-center">
-      <concurso-card :index="index" :concurso="concurso" v-for="(concurso, index) in concursos" />
-    </div>
-    <div class="align-items-start pt-5 pb-11 m-3 border-radius-lg" style="
-    background-image: linear-gradient(rgba(0, 0, 0, 0.7),rgba(0, 0, 0, 0.3)) , url('image/book_brain.jpg');
-    background-position: top; background-size: cover;">
-      <div class="mt-10">
-        <h1 class="text-decorado text-center">Textos para se inspirar</h1>
-        <div class="d-flex flex-wrap justify-content-center mt-12">
-          <texto-card :index="index" :texto="texto" v-for="(texto, index) in textos" />
-        </div>
-      </div>
-    </div>
   </main>
   <app-footer />
 </template>
 
 <script>
+
 import TextoCard from "@/components/Texto/TextoCard.vue";
-import ConcursoCard from "@/components/Concurso/ConcursoCard.vue";
 import Navbar from "@/examples/PageLayout/Navbar.vue";
 import AppFooter from "@/examples/PageLayout/Footer.vue";
 import api from "@/services/api";
 const body = document.getElementsByTagName("body")[0];
 
 export default {
-  name: "signin",
+  name: "quintal",
   components: {
     TextoCard,
-    ConcursoCard,
     Navbar,
     AppFooter,
   },
   data() {
     return {
-      concursos: [],
       textos: [],
       badge: ['badge-primary', 'badge-dark', 'badge-success', 'badge-danger', 'badge-info', 'badge-dark']
     };
   },
   async mounted() {
-    await this.loadConcursos();
     await this.loadTextos();
   },
   methods: {
-    async loadConcursos() {
-      try {
-        //const { data } = await api.get("/concursos");
-        const data = [{
-          "nome": "Concurso de Escrita Criativa 2023",
-          "descricao": "Uma competição para escritores de todas as idades e estilos literários.",
-          "observacoes": "O concurso é realizado anualmente desde 2015.",
-          "data_inicio": "2023-06-01",
-          "data_fim": "2023-08-31",
-          "categoria": ["Ficção", "Outro"],
-          "premio": "Prêmio em dinheiro de R$ 5.000,00",
-          "requisitos": [
-            "Idade mínima de 18 anos",
-            "Texto inédito e original",
-            "Máximo de 2.000 palavras"
-          ],
-          "avaliacao": "Os textos serão avaliados por um painel de jurados experientes no campo literário.",
-          "contato": {
-            "email": "contato@concursodeescrita2023.com",
-            "telefone": "(11) 98765-4321"
-          }
-        }
-        ]
-        this.concursos = data;
-      } catch (error) {
-        console.log(error);
-      }
-    },
     async loadTextos() {
       try {
         //const { data } = await api.get("/textos");
@@ -115,7 +74,7 @@ export default {
           "titulo_obra": "O Despertar da Imaginação",
           "texto": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing eli Lorem ipsum dolor sit amet, consectetur adipiscing eli Lorem ipsum dolor sit amet, consectetur adipiscing eli Lorem ipsum dolor sit amet, consectetur adipiscing eli Lorem ipsum dolor sit amet, consectetur adipiscing eli Lorem ipsum dolor sit amet, consectetur adipiscing eli Lorem ipsum dolor sit amet, consectetur adipiscing eli Lorem ipsum dolor sit amet, consectetur adipiscing eli Lorem ipsum dolor sit amet, consectetur adipiscing eli Lorem ipsum dolor sit amet, consectetur adipiscing eli Lorem ipsum dolor sit amet, consectetur adipiscing eli",
           "nota": 9.5,
-          "categoria": "Ficção"
+          "categoria": ["Ficção", "Outro"]
         }]
         this.textos = data;
       } catch (error) {

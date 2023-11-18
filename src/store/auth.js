@@ -49,17 +49,17 @@ export const auth = {
         },
     },
     actions: {
-        login({ commit }, data) {
-            console.log(data.token)
-            commit('storeToken', data.token)
-            //commit('storeRole', data.roles)
-            //commit('storeUserId', data.user_id)
-        },
+        // login({ commit }, data) {
+        //     console.log(data.token)
+        //     commit('storeToken', data.token)
+        //     //commit('storeRole', data.roles)
+        //     //commit('storeUserId', data.user_id)
+        // },
 
-        logout({ commit }) {
-            commit('dropToken')
-            //commit('dropRole')
-            //commit('dropUserId')
-        }
+        // logout({ commit }) {
+        //     commit('dropToken')
+        //     //commit('dropRole')
+        //     //commit('dropUserId')
+        // }
     }
 }

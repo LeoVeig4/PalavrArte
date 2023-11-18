@@ -3,6 +3,7 @@
     <div class="row">
       <div class="col-12">
         <navbar isBtn="bg-gradient-light" />
+        {{ $route.params.token }}
       </div>
     </div>
   </div>
@@ -115,7 +116,7 @@ export default {
           "titulo_obra": "O Despertar da Imaginação",
           "texto": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing eli Lorem ipsum dolor sit amet, consectetur adipiscing eli Lorem ipsum dolor sit amet, consectetur adipiscing eli Lorem ipsum dolor sit amet, consectetur adipiscing eli Lorem ipsum dolor sit amet, consectetur adipiscing eli Lorem ipsum dolor sit amet, consectetur adipiscing eli Lorem ipsum dolor sit amet, consectetur adipiscing eli Lorem ipsum dolor sit amet, consectetur adipiscing eli Lorem ipsum dolor sit amet, consectetur adipiscing eli Lorem ipsum dolor sit amet, consectetur adipiscing eli Lorem ipsum dolor sit amet, consectetur adipiscing eli",
           "nota": 9.5,
-          "categoria": "Ficção"
+          "categoria": ["Ficção", "Outro"]
         }]
         this.textos = data;
       } catch (error) {

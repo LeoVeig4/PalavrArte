@@ -1,11 +1,17 @@
 <template>
   <div class="form-group">
     <div :class="hasIcon(icon)">
+
+      <label v-if="label" class="form-control-label" :class="labelClasses">
+        {{ label }}
+        <span v-if="required">*</span>
+      </label>
       <span v-if="iconDir === 'left'" class="input-group-text">
         <i :class="getIcon(icon)"></i>
       </span>
-      <input :name="name" :id="id" :value="modelValue" :type="type" :min="min" :max="max" :placeholder="placeholder"
-        class="form-control" :class="getClasses(size, valid)" :disabled="disabled"
+      <slot name="customInput"></slot>
+      <input v-if="hasSlot" :name="name" :id="id" :value="modelValue" :type="type" :min="min" :max="max"
+        :placeholder="placeholder" class="form-control" :class="getClasses(size, valid)" :disabled="disabled"
         @input="$emit('update:modelValue', $event.target.value)" :isRequired="isRequired" v-maska :data-maska="mask" />
       <span v-if="iconDir === 'right'" class="input-group-text">
         <i :class="getIcon(icon)"></i>
@@ -24,6 +30,18 @@ export default {
     maska: vMaska,
   },
   props: {
+    labelClasses: {
+      type: String,
+      default: "",
+    },
+    label: {
+      type: String,
+      default: "",
+    },
+    required: {
+      type: Boolean,
+      default: false,
+    },
     mask: {
       type: String,
       default: "",
@@ -61,5 +79,12 @@ export default {
     getIcon: (icon) => (icon ? icon : null),
     hasIcon: (icon) => (icon ? "input-group" : null),
   },
+  computed: {
+    hasSlot() {
+      let hasSlot
+      this.$slots.customInput ? hasSlot = true : hasSlot = false;
+      return !hasSlot;
+    }
+  }
 };
 </script>

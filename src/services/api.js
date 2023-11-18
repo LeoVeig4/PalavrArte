@@ -4,11 +4,11 @@ import store from "@/store/index.js";
 // const isProd = process.env.NODE_ENV === "production";
 let isProd = true;
 const apiUrl = isProd
-  ? "https://smart-nutri-c0a046f8ac11.herokuapp.com/"
-  : "https://smart-nutri-c0a046f8ac11.herokuapp.com/";
+  ? "http://localhost:8080/"
+  : "http://127.0.0.0:8080/";
 
 const api = axios.create({
-  baseURL: apiUrl,
+  baseURL: 'http://localhost:8080/',
   timeout: 5000,
 });
 

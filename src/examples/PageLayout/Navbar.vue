@@ -4,7 +4,7 @@
     :class="isBlur ? isBlur : 'shadow-none my-2 navbar-transparent w-100'">
     <div class="container ps-2 pe-0">
       <router-link class="navbar-brand font-weight-bolder ms-lg-0 ms-3" :class="darkMode ? 'text-black' : 'text-white'"
-        to="/">Smart Nutri</router-link>
+        to="/">PalavrArte</router-link>
       <button class="shadow-none navbar-toggler ms-2" type="button" data-bs-toggle="collapse" data-bs-target="#navigation"
         aria-controls="navigation" aria-expanded="false" aria-label="Toggle navigation">
         <span class="mt-2 navbar-toggler-icon">
@@ -16,37 +16,35 @@
       <div class="collapse navbar-collapse" id="navigation">
         <ul class="navbar-nav mx-auto">
           <li class="nav-item">
-            <router-link class="nav-link d-flex align-items-center me-2 active" aria-current="page"
-              to="/dashboard-default">
-              <i class="fa fa-chart-pie opacity-6 me-1" aria-hidden="true"
+            <router-link class="nav-link d-flex align-items-center me-2 active" active-class="activated"
+              aria-current="page" to="/home">
+              <i class="fa fa-spa opacity-6 me-1 icon-color" aria-hidden="true"
                 :class="isBlur ? 'text-dark' : 'text-white'"></i>
-              Dashboard
+              Home
             </router-link>
           </li>
           <li class="nav-item">
-            <router-link class="nav-link me-2" to="/profile">
-              <i class="fa fa-user opacity-6 me-1" aria-hidden="true" :class="isBlur ? 'text-dark' : 'text-white'"></i>
-              Profile
+            <router-link class="nav-link me-2" to="/competicoes" active-class="activated">
+              <i class="fas fa-table opacity-6 me-1" aria-hidden="true" :class="isBlur ? 'text-dark' : 'text-white'"></i>
+              Competições abertas
             </router-link>
           </li>
           <li class="nav-item">
-            <router-link class="nav-link me-2" to="/signup">
-              <i class="fas fa-user-circle opacity-6 me-1" aria-hidden="true"
-                :class="isBlur ? 'text-dark' : 'text-white'"></i>
-              Sign Up
-            </router-link>
-          </li>
-          <li class="nav-item">
-            <router-link class="nav-link me-2" to="/signin">
-              <i class="fas fa-key opacity-6 me-1" aria-hidden="true" :class="isBlur ? 'text-dark' : 'text-white'"></i>
-              Sign In
+            <router-link class="nav-link me-2" to="/quintal" active-class="activated">
+              <i class="fas fa-cloud opacity-6 me-1" aria-hidden="true" :class="isBlur ? 'text-dark' : 'text-white'"></i>
+              Quintal de Textos
             </router-link>
           </li>
         </ul>
         <ul class="navbar-nav d-lg-block d-none">
           <li class="nav-item">
-            <a href="https://linktr.ee/polifeira" class="btn btn-sm mb-0 me-1" :class="isBtn">Notícias
-              PoliFeira</a>
+            <router-link v-if="$store.state.role === 'ESCOLA' || true" to="/cadastrar/avaliador"
+              class="btn btn-sm mb-0 me-2" :class="isBtn">
+              cadastrar
+              avaliador</router-link>
+            <router-link v-if="$store.state.role === undefined" to="/signin" class="btn btn-sm mb-0 me-1"
+              :class="isBtn">Login</router-link>
+            <div v-else to="/signin" class="btn btn-sm mb-0" :class="isBtn" @click="deslogar">logout</div>
           </li>
         </ul>
       </div>
@@ -64,8 +62,19 @@ export default {
   data() {
     return {
       downArrWhite,
-      downArrBlack
+      downArrBlack,
+
     };
+  },
+  methods: {
+    isActive(route) {
+      return this.$route.path === route;
+    },
+    async deslogar() {
+      this.$store.dispatch('logout');
+      this.$router.push('/signin');
+      console.log(this.$store.state.role, this.$store.state.idUsuario)
+    }
   },
   props: {
     btnBackground: String,
@@ -85,3 +94,16 @@ export default {
   }
 };
 </script>
+<style>
+.activated {
+  background-color: #dcdcdc !important;
+  border-radius: 10px;
+  color: #000 !important;
+  margin: 0px;
+  padding: 0px;
+}
+
+.activated i {
+  color: #000 !important;
+}
+</style>

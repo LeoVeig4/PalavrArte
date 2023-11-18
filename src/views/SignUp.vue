@@ -22,31 +22,19 @@
             <div class="col-xl-4 col-lg-5 col-md-7 mx-auto">
               <div class="card z-index-0 shadow-lg">
                 <div class="card-header text-center pt-4">
-                  <h5>Login</h5>
+                  <h5>Cadastro</h5>
                 </div>
                 <div class="card-body mt-n4">
-                  <form role="form" @submit="login">
+                  <form role="form" @submit.prevent="login">
                     <argon-input type="email" v-model="model.email" placeholder="Email" aria-label="Email" />
                     <argon-input type="password" v-model="model.senha" placeholder="Senha" aria-label="Senha" />
-                    <!-- <argon-checkbox checked>
-                      <label class="form-check-label" for="flexCheckDefault">
-                        I agree the
-                        <a href="javascript:;" class="text-dark font-weight-bolder">Terms and Conditions</a>
-                      </label>
-                    </argon-checkbox> -->
                     <div class="text-center">
-                      <argon-button fullWidth color="dark" variant="gradient" class="my-4 mb-2">Entrar</argon-button>
+                      <argon-button fullWidth color="dark" variant="gradient"
+                        class="my-4 mb-2">Cadastrar-se</argon-button>
                     </div>
                     <div class="d-flex justify-content-between">
-                      <p class="text-sm mt-3 mb-0">
-                        Esqueceu a
-                        <a href="recuperar a senha" class="text-dark font-weight-bolder">
-                          senha?</a>
-                      </p>
-                      <p class="text-sm mt-3 mb-0">
-                        Criar
-                        <span @click="$router.push('/signup')" class="text-dark font-weight-bolder cursor-pointer">
-                          Conta</span>
+                      <p class="text-sm mt-3 text-dark font-weight-bolder cursor-pointer" @click="$router.back()">
+                        Voltar
                       </p>
                     </div>
                   </form>
@@ -78,20 +66,18 @@ export default {
       model: {
         email: "",
         senha: "",
+        categoria: "ALUNO"
       },
     };
   },
   methods: {
-    async login(e) {
-      e.preventDefault();
+    async login() {
       try {
         this.$swal.showLoading();
-        const payload = await api.post("/usuario/login", this.model);
-        console.log(payload)
+        const { data } = await api.post("/usuario/cadastrar", this.model);
         this.$swal.close();
-        this.$store.dispatch("login", payload);
-        this.$toast.success("Login realizado com sucesso");
-        this.$router.push("/home");
+        this.$toast.success("Cadastro realizado com sucesso");
+        this.$router.push('/signin');
       } catch (error) {
         console.log(error)
         this.$toast.error("Erro ao fazer login");

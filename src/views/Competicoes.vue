@@ -8,7 +8,7 @@
   </div>
   <main class="main-content mt-0">
     <div class="page-header align-items-start vh-100 pt-5 pb-11 m-3 border-radius-lg" style="
-        background-image: linear-gradient(rgba(0, 0, 0, 0.69),rgba(0, 0, 0, 0)) , url('image/book_shelf.jpg');
+        background-image: linear-gradient(rgba(0, 0, 0, 0.5),rgba(0, 0, 0, 0.0)) , url('image/book_spiral.jpg');
         background-position: top; background-size: cover;
       ">
       <span class="mask bg-gradient-dark opacity-6"></span>
@@ -21,6 +21,11 @@
               sente que são.</h1>
             <p class="float-end"><a class="link-decoration fw-bold" target="_blank"
                 href="https://www.ebiografia.com/fernando_pessoa/">Fernando Pessoa</a></p>
+            <div v-if="$store.state.role === 'ESCOLA'" class="mt-5">
+              <argon-button class="mx-auto" @click="$router.push('competicoes/novo')">Cadastrar Novo
+                Concurso</argon-button>
+            </div>
+
           </div>
         </div>
       </div>
@@ -29,13 +34,14 @@
     <div class="d-flex flex-wrap justify-content-center">
       <concurso-card :index="index" :concurso="concurso" v-for="(concurso, index) in concursos" />
     </div>
-    <div class="align-items-start pt-5 pb-11 m-3 border-radius-lg" style="
-    background-image: linear-gradient(rgba(0, 0, 0, 0.7),rgba(0, 0, 0, 0.3)) , url('image/book_brain.jpg');
-    background-position: top; background-size: cover;">
-      <div class="mt-10">
-        <h1 class="text-decorado text-center">Textos para se inspirar</h1>
-        <div class="d-flex flex-wrap justify-content-center mt-12">
-          <texto-card :index="index" :texto="texto" v-for="(texto, index) in textos" />
+    <div class="align-items-start vh-100 pt-7 m-3 border-radius-lg" style="
+    background-image: linear-gradient(rgba(0, 0, 0, 0.5),rgba(0, 0, 0, 0.0)) , url('image/old-books.jpg');
+    background-position: top; background-size: cover;
+  ">
+      <div class="container">
+        <h1 class="text-center text-white mb-6">Minhas competições</h1>
+        <div class="d-flex flex-wrap justify-content-center">
+          <concurso-card :index="index" :concurso="concurso" v-for="(concurso, index) in concursos" customClass="" />
         </div>
       </div>
     </div>
@@ -52,7 +58,7 @@ import api from "@/services/api";
 const body = document.getElementsByTagName("body")[0];
 
 export default {
-  name: "signin",
+  name: "competicoes",
   components: {
     TextoCard,
     ConcursoCard,
@@ -115,7 +121,7 @@ export default {
           "titulo_obra": "O Despertar da Imaginação",
           "texto": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing eli Lorem ipsum dolor sit amet, consectetur adipiscing eli Lorem ipsum dolor sit amet, consectetur adipiscing eli Lorem ipsum dolor sit amet, consectetur adipiscing eli Lorem ipsum dolor sit amet, consectetur adipiscing eli Lorem ipsum dolor sit amet, consectetur adipiscing eli Lorem ipsum dolor sit amet, consectetur adipiscing eli Lorem ipsum dolor sit amet, consectetur adipiscing eli Lorem ipsum dolor sit amet, consectetur adipiscing eli Lorem ipsum dolor sit amet, consectetur adipiscing eli Lorem ipsum dolor sit amet, consectetur adipiscing eli",
           "nota": 9.5,
-          "categoria": "Ficção"
+          "categoria": ["Ficção", "Outro"]
         }]
         this.textos = data;
       } catch (error) {
