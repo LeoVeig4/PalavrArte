@@ -4,7 +4,8 @@
             <div class="card-header text-center pt-4">
                 <img src="/image/book_shelf.jpg" class="w-100 mt-n4 image-container" />
                 <h3> {{ texto.titulo }}</h3>
-                <h3 class="badge badge-pill ms-1" :class="badge[index % 6 + 2]">Colocação: {{ index + 1 }}°</h3>
+                <h3 v-if="finalizou" class="badge badge-pill ms-1" :class="badge[index % 6 + 2]">Colocação: {{ index + 1 }}°
+                </h3>
                 <hr />
             </div>
             <div class="card-body text-start mt-n5">

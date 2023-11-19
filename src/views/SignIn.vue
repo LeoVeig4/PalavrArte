@@ -2,7 +2,7 @@
   <div class="container top-0 position-relative z-index-3">
     <div class="row">
       <div class="col-12">
-        <navbar v-if="Number($store.state.idUsuario) !== NaN" isBtn="bg-gradient-light" />
+        <navbar v-if="$store.state.role !== undefined" isBtn="bg-gradient-light" />
       </div>
     </div>
   </div>
