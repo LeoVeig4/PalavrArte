@@ -27,8 +27,9 @@
       </div>
     </div>
 
-    <div class="d-flex flex-wrap justify-content-center">
-      <concurso-card :index="index" :concurso="concurso" v-for="(concurso, index) in concursos" />
+    <div class="d-flex flex-wrap justify-content-center align-items-center mt-n10">
+      <concurso-card :index="index" class="col-md-4  col-10" :concurso="concurso"
+        v-for="(concurso, index) in concursos" />
     </div>
     <div class="align-items-start pt-5 pb-11 m-3 border-radius-lg" style="
     background-image: linear-gradient(rgba(0, 0, 0, 0.7),rgba(0, 0, 0, 0.3)) , url('image/book_brain.jpg');

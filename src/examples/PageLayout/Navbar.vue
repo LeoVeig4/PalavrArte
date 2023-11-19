@@ -15,14 +15,7 @@
       </button>
       <div class="collapse navbar-collapse" id="navigation">
         <ul class="navbar-nav mx-auto">
-          <li class="nav-item">
-            <router-link class="nav-link d-flex align-items-center me-2 active" active-class="activated"
-              aria-current="page" to="/home">
-              <i class="fa fa-spa opacity-6 me-1 icon-color" aria-hidden="true"
-                :class="isBlur ? 'text-dark' : 'text-white'"></i>
-              Home
-            </router-link>
-          </li>
+
           <li class="nav-item">
             <router-link class="nav-link me-2" to="/competicoes" active-class="activated">
               <i class="fas fa-table opacity-6 me-1" aria-hidden="true" :class="isBlur ? 'text-dark' : 'text-white'"></i>
@@ -35,13 +28,13 @@
               Quintal de Textos
             </router-link>
           </li>
-        </ul>
-        <ul class="navbar-nav d-lg-block d-none">
-          <li class="nav-item">
-            <router-link v-if="$store.state.role === 'ESCOLA' || true" to="/cadastrar/avaliador"
-              class="btn btn-sm mb-0 me-2" :class="isBtn">
-              cadastrar
+          <li class="nav-item" v-if="$store.state.role === 'ESCOLA'">
+            <router-link to="/cadastrar/avaliador" class="nav-link me-2" active-class="activated">
+              <i class="fa fa-spa opacity-6 icon-color me-2" aria-hidden="true"
+                :class="isBlur ? 'text-dark' : 'text-white'"></i>cadastrar
               avaliador</router-link>
+          </li>
+          <li class="nav-item">
             <router-link v-if="$store.state.role === undefined" to="/signin" class="btn btn-sm mb-0 me-1"
               :class="isBtn">Login</router-link>
             <div v-else to="/signin" class="btn btn-sm mb-0" :class="isBtn" @click="deslogar">logout</div>

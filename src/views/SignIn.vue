@@ -2,7 +2,7 @@
   <div class="container top-0 position-relative z-index-3">
     <div class="row">
       <div class="col-12">
-        <navbar isBtn="bg-gradient-light" />
+        <navbar v-if="Number($store.state.idUsuario) !== NaN" isBtn="bg-gradient-light" />
       </div>
     </div>
   </div>
@@ -86,12 +86,11 @@ export default {
       e.preventDefault();
       try {
         this.$swal.showLoading();
-        const payload = await api.post("/usuario/login", this.model);
-        console.log(payload)
+        const data = await api.post("/usuario/login", this.model);
         this.$swal.close();
-        this.$store.dispatch("login", payload);
+        this.$store.dispatch("login", data.data);
         this.$toast.success("Login realizado com sucesso");
-        this.$router.push("/home");
+        this.$router.push("/competicoes");
       } catch (error) {
         console.log(error)
         this.$toast.error("Erro ao fazer login");

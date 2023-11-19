@@ -2,7 +2,7 @@
   <div class="container top-0 position-relative z-index-3">
     <div class="row">
       <div class="col-12">
-        <navbar isBtn="bg-gradient-light" />
+        <!-- <navbar isBtn="bg-gradient-light" /> -->
       </div>
     </div>
   </div>
@@ -26,6 +26,7 @@
                 </div>
                 <div class="card-body mt-n4">
                   <form role="form" @submit.prevent="login">
+                    <argon-input v-model="model.nome" placeholder="Nome" aria-label="Nome" />
                     <argon-input type="email" v-model="model.email" placeholder="Email" aria-label="Email" />
                     <argon-input type="password" v-model="model.senha" placeholder="Senha" aria-label="Senha" />
                     <div class="text-center">
@@ -64,6 +65,7 @@ export default {
   data() {
     return {
       model: {
+        nome: "",
         email: "",
         senha: "",
         categoria: "ALUNO"

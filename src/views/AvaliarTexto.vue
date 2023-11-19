@@ -20,17 +20,26 @@
                 </div>
             </div>
         </div>
+        <div class="outro">
+            <div class="card container texto-css mb-5">
+                <h3 class="my-3"> Texto </h3>
+                <hr class="my-4" />
 
-        <div class="card container texto-css">
-            <h3 class="my-3"> Texto </h3>
-            <hr class="my-4" />
-
-            <h1>{{ texto.titulo }}</h1>
-            <p v-html="texto.texto"></p>
-        </div>
-        <div class="card cotainer">
-            <argon-input label="Nota" v-model="model.nota" type="number" min="0" max="10" />
-            <argon-input label="Comentário" v-model="model.comentario" />
+                <h1>{{ textoMostrado.titulo }}</h1>
+                <p v-html="textoMostrado.texto"></p>
+            </div>
+            <div class="card container mt-5 p-4">
+                <argon-input label="Nota" v-model="model.nota" type="number" :min="0" :max="10" />
+                <argon-input>
+                    <template #customInput>
+                        <label>Comentário</label>
+                        <textarea rows="3" class="form-control" placeholder="Faça algum comentário"
+                            v-model="model.comentario">
+                        </textarea>
+                    </template>
+                </argon-input>
+                <argon-button @click="submit">Avaliar</argon-button>
+            </div>
         </div>
     </main>
     <app-footer />
@@ -57,10 +66,10 @@ export default {
             texto: [],
             textoMostrado: {},
             model: {
-                "idConcursoSubmissao": 0,
-                "idUsuarioAvaliador": this.$store.state.idUsuario,
-                "nota": 0,
-                "comentario": "string"
+                idConcursoSubmissao: this.$route.params.id,
+                idUsuarioAvaliador: this.$store.state.idUsuario,
+                nota: 0,
+                comentario: ""
             },
             badge: ['badge-primary', 'badge-dark', 'badge-success', 'badge-danger', 'badge-info', 'badge-dark']
         };
@@ -69,37 +78,44 @@ export default {
         await this.loadTextos();
     },
     methods: {
-
-        async loadTexto() {
+        async loadTextos() {
             try {
-                //const { data } = await api.get(`/concurso/get-lista-textos/${this.$route.params.idConcurso}/avaliador/${this.$store.state.idUsuario}`);
-                const data = {
-                    "idConcursoSubmissao": 1,
-                    "titulo": "O Despertar da Imaginação",
-                    "texto": "<strong>Lorem ipsum dolor</strong> sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing eli Lorem ipsum dolor sit amet, consectetur adipiscing eli Lorem ipsum dolor sit amet, consectetur adipiscing eli Lorem ipsum dolor sit amet, consectetur adipiscing eli Lorem ipsum dolor sit amet, consectetur adipiscing eli Lorem ipsum dolor sit amet, consectetur adipiscing eli Lorem ipsum dolor sit amet, consectetur adipiscing eli Lorem ipsum dolor sit amet, consectetur adipiscing eli Lorem ipsum dolor sit amet, consectetur adipiscing eli Lorem ipsum dolor sit amet, consectetur adipiscing eli Lorem ipsum dolor sit amet, consectetur adipiscing eli",
-                    "jaAvaliou": false
-                }
+                const { data } = await api.get(`/concurso/get-lista-textos/${this.$route.params.id}/avaliador/${this.$store.state.idUsuario}`);
+
                 this.texto = data.filter(item => item.jaAvaliou == false);
                 if (this.texto.length == 0) {
                     this.$toast.error("Você já avaliou todos os textos desse concurso");
                     this.$router.back()
                 }
+                console.log(this.texto)
                 this.textoMostrado = this.texto[0];
             } catch (error) {
                 console.log(error);
             }
         },
         async submit() {
+            //checa se todos os campos estão preenchidos
+            if (this.model.nota < 0 || this.model.comentario == "") {
+                this.$toast.error("Preencha todos os campos");
+                return;
+            }
+            if (this.model.nota > 10) {
+                this.$toast.error("Nota não pode ser maior que 10");
+                return;
+            }
             try {
                 this.$swal.showLoading();
                 const { data } = await api.post("/concurso/avaliar", this.model);
                 this.$swal.close();
                 this.texto.shift()
                 this.$toast.success("avaliacao realizada com sucesso");
-                if (this.texto.length > 0)
+                if (this.texto.length > 0) {
                     this.textoMostrado = this.texto[0];
+                    this.model.nota = 0;
+                    this.model.comentario = "";
+                }
                 else
-                    this.$router.push('/home');
+                    this.$router.push('/competicoes');
             } catch (error) {
                 this.$toast.error("Erro ao fazer login");
                 this.$swal.close();
@@ -126,10 +142,13 @@ export default {
 <style scoped>
 .texto-css {
     min-width: 350px;
-    margin-top: -400px;
     max-height: 600px;
     overflow-y: scroll;
     box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.2);
+}
+
+.outro {
+    margin-top: -400px;
 }
 
 .header-image {

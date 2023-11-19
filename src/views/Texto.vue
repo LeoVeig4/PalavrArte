@@ -25,15 +25,15 @@
             <h3 class="my-3"> Texto </h3>
             <hr class="my-4" />
             <p class="badge badge-success badge-pill ms-1">
-                <strong>Nome do Autor:</strong> {{ inscricao.nome }}
+                <strong>Nome do Autor:</strong> {{ texto.autor }}
             </p>
-            <p class="badge badge-primary badge-pill ms-1">
+            <p v-if="texto.categoria" class="badge badge-primary badge-pill ms-1">
                 {{ texto.categoria }}</p>
-            <p class="badge badge-info badge-pill ms-1">
-                {{ texto.nota }}</p>
+            <p v-if="texto.nota" class="badge badge-info badge-pill ms-1">
+                Nota: {{ texto.nota }}</p>
             <hr class="my-4" />
 
-            <h1>{{ texto.titulo_obra }}</h1>
+            <h1>{{ texto.titulo }}</h1>
             <p v-html="texto.texto"></p>
 
         </div>
@@ -51,6 +51,7 @@ const body = document.getElementsByTagName("body")[0];
 
 export default {
     name: "signin",
+
     components: {
         TextoCard,
         ConcursoCard,
@@ -60,51 +61,19 @@ export default {
     data() {
         return {
             texto: {},
-            inscricao: {},
             badge: ['badge-primary', 'badge-dark', 'badge-success', 'badge-danger', 'badge-info', 'badge-dark']
         };
     },
     async mounted() {
-        await this.loadTexto();
+        await this.loadTexto()
     },
     methods: {
-
         async loadTexto() {
             try {
-                //const { data } = await api.get("/textos");
-                const data = {
-                    "inscricao": {
-                        "nome": "Nome Completo",
-                        "idade": 25,
-                        "email": "exemplo@email.com",
-                        "telefone": "(11) 98765-4321",
-                        "endereco": "",
-                        "Observacoes": "eu sou da escola tal"
-                    },
-                    "id": 1,
-                    "titulo_obra": "O Despertar da Imaginação",
-                    "texto": "<strong>Lorem ipsum dolor</strong> sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing eli Lorem ipsum dolor sit amet, consectetur adipiscing eli Lorem ipsum dolor sit amet, consectetur adipiscing eli Lorem ipsum dolor sit amet, consectetur adipiscing eli Lorem ipsum dolor sit amet, consectetur adipiscing eli Lorem ipsum dolor sit amet, consectetur adipiscing eli Lorem ipsum dolor sit amet, consectetur adipiscing eli Lorem ipsum dolor sit amet, consectetur adipiscing eli Lorem ipsum dolor sit amet, consectetur adipiscing eli Lorem ipsum dolor sit amet, consectetur adipiscing eli Lorem ipsum dolor sit amet, consectetur adipiscing eli",
-                    "nota": 9.5,
-                    "categoria": "ficção"
-                }
+                const { data } = await api.get(`/concurso/get-submissao/${this.$route.params.id}`);
                 this.texto = data;
-                this.inscricao = data.inscricao;
             } catch (error) {
                 console.log(error);
-            }
-        },
-        async login() {
-            try {
-                this.$swal.showLoading();
-                const { data } = await api.post("/auth/login", this.model);
-                this.$swal.close();
-                console.log(data);
-                this.$store.dispatch("login", data);
-                this.$toast.success("Login realizado com sucesso");
-                this.$router.push({ name: "Dashboard" });
-            } catch (error) {
-                this.$toast.error("Erro ao fazer login");
-                this.$swal.close();
             }
         },
     },

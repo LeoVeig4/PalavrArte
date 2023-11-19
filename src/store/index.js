@@ -79,6 +79,7 @@ export default createStore({
   getters: {},
   actions: {
     login({ commit }, data) {
+      console.log(data)
       commit('storeRole', data.categoria)
       commit('storeId', data.idUsuario)
     },

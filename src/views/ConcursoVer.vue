@@ -26,46 +26,47 @@
 
           </div>
           <div class=" mx-auto">
-            <label>Data início: </label><span class="ms-2">{{ concurso.data_inicio }}</span>
+            <label>Data início: </label><span class="ms-2">{{ concurso.dataInicio }}</span>
 
           </div>
           <div class=" mx-auto">
-            <label>Data Fim: </label><span class="ms-2">{{ concurso.data_fim }}</span>
+            <label>Data Fim: </label><span class="ms-2">{{ concurso.dataFim }}</span>
 
           </div>
           <div class=" mx-auto">
-            <label>Categoria: </label><span class="ms-2">{{ concurso.categoria.nome }}</span>
+            <label>Categoria: </label><span class="ms-2">{{ concurso.categoria
+            }}</span>
           </div>
+
           <div class=" mx-auto">
-            <label>Prêmio do Concurso: </label><span class="ms-2">{{ concurso.premio }}</span>
+            <label>Requisitos: </label><span class="ms-2">{{ concurso.requisitos || "Não há requisitos" }}</span>
           </div>
-          <div class=" mx-auto">
-            <label>Requisitos: </label><span class="ms-2">{{ concurso.requisitos }}</span>
-          </div>
-          <div class=" mx-auto">
-            <label>Métodos de Avaliação: </label><span class="ms-2">{{ concurso.avaliacao }}</span>
-          </div>
-          <div class=" mx-auto">
+
+          <!-- <div class=" mx-auto">
             <label>Avaliadores: </label>
             <span v-for="avaliador in concurso.avaliadores" class="badge badge-pill ms-1" style="color:black;">
               {{ avaliador.nome }}</span>
-          </div>
+          </div> -->
         </div>
         <div class="mt-5 text-center">
-          <argon-button v-if="$store.state.role === 'ALUNO'" class="mx-auto"
-            @click="$router.push(`competicao/${$route.params.id}/inscricao`)">Inscrever-se</argon-button>
-          <argon-button v-if="$store.state.role === 'ESCOLA'" class="mx-auto"
-            @click="$router.push(`competicao/${$route.params.id}/editar`)">Editar</argon-button>
-          <argon-button v-if="$store.state.role === 'AVALIADOR'" class="mx-auto"
-            @click="$router.push(`competicao/${$route.params.id}/corrigir`)">Corrigir</argon-button>
+          <router-link v-if="$store.state.role === 'ALUNO'" class="mx-auto btn btn-primary"
+            :to="`/competicoes/${$route.params.id}/inscricao`">Inscrever-se</router-link>
+          <router-link v-if="$store.state.role === 'ESCOLA'" class="mx-auto mx-auto btn btn-primary"
+            :to="`/competicoes/${$route.params.id}/editar`">Editar</router-link>
+          <argon-button v-if="$store.state.role === 'ESCOLA' && concurso.status != 'Encerrado'" color="warning"
+            class="mx-auto btn" @click="fechar">fechar
+            concurso</argon-button>
+          <router-link v-if="$store.state.role === 'AVALIADOR'" class="mx-auto mx-auto btn btn-primary"
+            :to="`/competicoes/${$route.params.id}/corrigir`">Corrigir</router-link>
         </div>
       </div>
     </div>
     <div class="align-items-start pt-5 pb-11 m-3 border-radius-lg test2">
       <div class="mt-10">
         <h1 class="text-white text-center">Textos para se inspirar</h1>
-        <div class="d-flex flex-wrap justify-content-center mt-12">
-          <texto-card :index="index" :texto="texto" v-for="(texto, index) in textos" />
+        <div class="d-flex flex-wrap justify-content-center align-items-center mt-7">
+          <texto-card :index="index" :finalizou="true" class="col-md-4  col-10" :texto="texto"
+            v-for="(texto, index) in textos" />
         </div>
       </div>
     </div>
@@ -95,14 +96,11 @@ export default {
       concurso: {
         nome: "",
         descricao: "",
-        observacoes: "",
         status: "",
-        data_inicio: "",
-        data_fim: "",
+        dataInicio: "",
+        dataFim: "",
         categoria: "",
-        premio: "",
         requisitos: "",
-        avaliacao: "",
         avaliadores: [],
       },
       textos: [],
@@ -110,61 +108,22 @@ export default {
   },
   async mounted() {
     await this.loadConcurso();
-    await this.loadTextos();
   },
   methods: {
-    async loadTextos() {
+    async fechar() {
       try {
-        //const { data } = await api.get("/textos");
-        const data = [{
-          "inscricao": {
-            "nome": "Nome Completo",
-            "idade": 25,
-            "email": "exemplo@email.com",
-            "telefone": "(11) 98765-4321",
-            "endereco": "",
-            "Observacoes": "eu sou da escola tal"
-          },
-          "id": 1,
-          "titulo_obra": "O Despertar da Imaginação",
-          "texto": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing eli Lorem ipsum dolor sit amet, consectetur adipiscing eli Lorem ipsum dolor sit amet, consectetur adipiscing eli Lorem ipsum dolor sit amet, consectetur adipiscing eli Lorem ipsum dolor sit amet, consectetur adipiscing eli Lorem ipsum dolor sit amet, consectetur adipiscing eli Lorem ipsum dolor sit amet, consectetur adipiscing eli Lorem ipsum dolor sit amet, consectetur adipiscing eli Lorem ipsum dolor sit amet, consectetur adipiscing eli Lorem ipsum dolor sit amet, consectetur adipiscing eli Lorem ipsum dolor sit amet, consectetur adipiscing eli",
-          "nota": 9.5,
-          "categoria": "Ficção"
-        }]
-        this.textos = data;
+        const url = `/concurso/encerrar/${this.$route.params.id}`
+        const { data } = await api.get(url);
       } catch (error) {
         console.log(error);
       }
     },
     async loadConcurso() {
       try {
-        //const { data } = await api.get(`/concursos/${this.$route.params.id}`);
-        const data = {
-          "id": 1,
-          "nome": "Concurso da Feira do Livro",
-          "descricao": "Concurso de redação para alunos do ensino fundamental",
-          "observacoes": "O concurso será realizado no dia 10/10/2021",
-          "data_inicio": "2021-10-10",
-          "data_fim": "2021-10-10",
-          "categoria": {
-            "id": 1,
-            "nome": "Redação"
-          },
-          "premio": "R$ 100,00",
-          "requisitos": "Alunos do ensino fundamental",
-          "avaliacao": "Os textos serão avaliados por professores da rede pública",
-          "avaliadores": [
-            {
-              "id": 1,
-              "nome": "João da Silva"
-            },
-            {
-              "id": 2,
-              "nome": "Maria da Silva"
-            }
-          ]
-        }
+        const url = `/concurso/${this.$route.params.id}`
+        const { data } = await api.get(url);
         this.concurso = data;
+        this.textos = data.submissoes;
       } catch (error) {
         console.log(error);
       }

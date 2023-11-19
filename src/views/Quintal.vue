@@ -21,12 +21,15 @@
               sente que são.</h1>
             <p class="float-end"><a class="link-decoration fw-bold" target="_blank"
                 href="https://www.ebiografia.com/fernando_pessoa/">Fernando Pessoa</a></p>
+            <div v-if="$store.state.role === 'ALUNO'" class="mt-5 mb-10">
+              <argon-button class="mx-auto" @click="$router.push({ name: 'meus_textos' })">Meus Textos</argon-button>
+            </div>
           </div>
         </div>
       </div>
     </div>
-    <div class="d-flex flex-wrap justify-content-center mt-n5">
-      <texto-card :index="index" :texto="texto" v-for="(texto, index) in textos" />
+    <div class="d-flex flex-wrap justify-content-center align-items-center mt-n10">
+      <texto-card class="col-md-4  col-10" :index="index" :texto="texto" v-for="(texto, index) in textos" />
     </div>
 
   </main>
@@ -60,22 +63,7 @@ export default {
   methods: {
     async loadTextos() {
       try {
-        //const { data } = await api.get("/textos");
-        const data = [{
-          "inscricao": {
-            "nome": "Nome Completo",
-            "idade": 25,
-            "email": "exemplo@email.com",
-            "telefone": "(11) 98765-4321",
-            "endereco": "",
-            "Observacoes": "eu sou da escola tal"
-          },
-          "id": 1,
-          "titulo_obra": "O Despertar da Imaginação",
-          "texto": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing eli Lorem ipsum dolor sit amet, consectetur adipiscing eli Lorem ipsum dolor sit amet, consectetur adipiscing eli Lorem ipsum dolor sit amet, consectetur adipiscing eli Lorem ipsum dolor sit amet, consectetur adipiscing eli Lorem ipsum dolor sit amet, consectetur adipiscing eli Lorem ipsum dolor sit amet, consectetur adipiscing eli Lorem ipsum dolor sit amet, consectetur adipiscing eli Lorem ipsum dolor sit amet, consectetur adipiscing eli Lorem ipsum dolor sit amet, consectetur adipiscing eli Lorem ipsum dolor sit amet, consectetur adipiscing eli",
-          "nota": 9.5,
-          "categoria": ["Ficção", "Outro"]
-        }]
+        const { data } = await api.get("/concurso/listar-ultimas-submissoes");
         this.textos = data;
       } catch (error) {
         console.log(error);

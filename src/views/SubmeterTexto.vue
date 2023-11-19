@@ -25,8 +25,14 @@
             <h3 class="my-3"> Texto </h3>
             <hr class="my-4" />
             <argon-input label="Titulo do Texto" v-model="model.titulo" />
-            <quill-editor v-model:value="model.texto" :options="editorEdittable">
-            </quill-editor>
+            <argon-input>
+                <template #customInput>
+                    <label>Texto a ser avaliado</label>
+                    <textarea rows="3" class="form-control" placeholder="Escreva o seu Texto" v-model="model.texto">
+                    </textarea>
+                </template>
+            </argon-input>
+            <argon-button class="mb-3" @click="submit">Submeter</argon-button>
         </div>
     </main>
     <app-footer />
@@ -40,11 +46,7 @@ import AppFooter from "@/examples/PageLayout/Footer.vue";
 import api from "@/services/api";
 const body = document.getElementsByTagName("body")[0];
 
-import "quill/dist/quill.core.css";
-import "quill/dist/quill.snow.css";
-import "quill/dist/quill.bubble.css";
 
-import { quillEditor } from 'vue3-quill'
 export default {
     name: "signin",
     components: {
@@ -52,59 +54,33 @@ export default {
         ConcursoCard,
         Navbar,
         AppFooter,
-        quillEditor
     },
     data() {
         return {
             texto: [],
             textoMostrado: {},
             model: {
-                "idConcurso": 0,
-                "idAluno": this.$store.state.idUsuario,
-                "titulo": "",
-                "texto": ""
+                idConcurso: this.$route.params.id,
+                idAluno: this.$store.state.idUsuario,
+                titulo: "",
+                texto: ""
             },
-            editorEdittable: {
-                placeholder: "Escreva aqui as o seu texto"
-            },
+
             badge: ['badge-primary', 'badge-dark', 'badge-success', 'badge-danger', 'badge-info', 'badge-dark']
         };
     },
     async mounted() {
-        await this.loadTextos();
     },
     methods: {
-
-        async loadTexto() {
-            try {
-                //const { data } = await api.get(`/concurso/get-lista-textos/${this.$route.params.idConcurso}/avaliador/${this.$store.state.idUsuario}`);
-                const data = {
-                    "idConcursoSubmissao": 1,
-                    "titulo": "O Despertar da Imaginação",
-                    "texto": "<strong>Lorem ipsum dolor</strong> sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing eli Lorem ipsum dolor sit amet, consectetur adipiscing eli Lorem ipsum dolor sit amet, consectetur adipiscing eli Lorem ipsum dolor sit amet, consectetur adipiscing eli Lorem ipsum dolor sit amet, consectetur adipiscing eli Lorem ipsum dolor sit amet, consectetur adipiscing eli Lorem ipsum dolor sit amet, consectetur adipiscing eli Lorem ipsum dolor sit amet, consectetur adipiscing eli Lorem ipsum dolor sit amet, consectetur adipiscing eli Lorem ipsum dolor sit amet, consectetur adipiscing eli Lorem ipsum dolor sit amet, consectetur adipiscing eli",
-                    "jaAvaliou": false
-                }
-                this.texto = data.filter(item => item.jaAvaliou == false);
-                if (this.texto.length == 0) {
-                    this.$toast.error("Você já avaliou todos os textos desse concurso");
-                    this.$router.back()
-                }
-                this.textoMostrado = this.texto[0];
-            } catch (error) {
-                console.log(error);
-            }
-        },
         async submit() {
             try {
                 this.$swal.showLoading();
-                const { data } = await api.post("/concurso/avaliar", this.model);
+                console.log(this.model)
+                const { data } = await api.post("/concurso/submeter", this.model);
                 this.$swal.close();
                 this.texto.shift()
-                this.$toast.success("avaliacao realizada com sucesso");
-                if (this.texto.length > 0)
-                    this.textoMostrado = this.texto[0];
-                else
-                    this.$router.push('/home');
+                this.$toast.success("texto submetido com sucesso");
+                this.$router.push('/competicoes');
             } catch (error) {
                 this.$toast.error("Erro ao fazer login");
                 this.$swal.close();

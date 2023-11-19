@@ -14,6 +14,7 @@ const routes = [
     name: "/",
     redirect: "/signin",
   },
+
   {
     path: "/signin",
     name: "SignIn",
@@ -24,11 +25,7 @@ const routes = [
     name: "SignUp",
     component: () => import("../views/SignUp.vue"),
   },
-  {
-    path: "/home",
-    name: "Home",
-    component: () => import("../views/Home.vue"),
-  },
+
   {
     path: "/quintal",
     name: "Quintal_de_Textos",
@@ -39,6 +36,7 @@ const routes = [
     name: "Competições_abertas",
     component: () => import("../views/Competicoes.vue"),
   },
+
   {
     path: "/competicoes/:id",
     name: "Competições_ver",
@@ -55,14 +53,25 @@ const routes = [
     component: () => import("../views/CadastraAvaliador.vue"),
   },
   {
-    path: "/inscricao/:id",
+    path: "/competicoes/:id/inscricao",
     name: "Inscricao",
-    component: () => import("../views/Inscricao.vue"),
+    component: () => import("../views/SubmeterTexto.vue"),
   },
+  {
+    path: "/competicoes/:id/corrigir",
+    name: "Inscricao",
+    component: () => import("../views/AvaliarTexto.vue"),
+  },
+
   {
     path: "/texto/:id",
     name: "Ler_Texto",
     component: () => import("../views/Texto.vue"),
+  },
+  {
+    path: "/meus/textos",
+    name: "meus_textos",
+    component: () => import("../views/MeusTextos.vue"),
   },
 
   { path: "/:catchAll(.*)", redirect: "/signin" },

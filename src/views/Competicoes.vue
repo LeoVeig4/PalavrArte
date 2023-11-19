@@ -22,7 +22,7 @@
             <p class="float-end"><a class="link-decoration fw-bold" target="_blank"
                 href="https://www.ebiografia.com/fernando_pessoa/">Fernando Pessoa</a></p>
             <div v-if="$store.state.role === 'ESCOLA'" class="mt-5">
-              <argon-button class="mx-auto" @click="$router.push('competicoes/novo')">Cadastrar Novo
+              <argon-button class="mx-auto" @click="$router.push({ name: 'Concurso_novo' })">Cadastrar Novo
                 Concurso</argon-button>
             </div>
 
@@ -31,20 +31,11 @@
       </div>
     </div>
 
-    <div class="d-flex flex-wrap justify-content-center">
-      <concurso-card :index="index" :concurso="concurso" v-for="(concurso, index) in concursos" />
+    <div class="d-flex flex-wrap justify-content-center align-items-center mt-n10">
+      <concurso-card :index="index" class="col-md-4  col-10" :concurso="concurso"
+        v-for="(concurso, index) in concursos" />
     </div>
-    <div class="align-items-start vh-100 pt-7 m-3 border-radius-lg" style="
-    background-image: linear-gradient(rgba(0, 0, 0, 0.5),rgba(0, 0, 0, 0.0)) , url('image/old-books.jpg');
-    background-position: top; background-size: cover;
-  ">
-      <div class="container">
-        <h1 class="text-center text-white mb-6">Minhas competições</h1>
-        <div class="d-flex flex-wrap justify-content-center">
-          <concurso-card :index="index" :concurso="concurso" v-for="(concurso, index) in concursos" customClass="" />
-        </div>
-      </div>
-    </div>
+
   </main>
   <app-footer />
 </template>
@@ -73,66 +64,25 @@ export default {
     };
   },
   async mounted() {
+    this.$swal.showLoading();
     await this.loadConcursos();
-    await this.loadTextos();
+    this.$swal.close();
+
   },
   methods: {
     async loadConcursos() {
       try {
-        //const { data } = await api.get("/concursos");
-        const data = [{
-          "nome": "Concurso de Escrita Criativa 2023",
-          "descricao": "Uma competição para escritores de todas as idades e estilos literários.",
-          "observacoes": "O concurso é realizado anualmente desde 2015.",
-          "data_inicio": "2023-06-01",
-          "data_fim": "2023-08-31",
-          "categoria": ["Ficção", "Outro"],
-          "premio": "Prêmio em dinheiro de R$ 5.000,00",
-          "requisitos": [
-            "Idade mínima de 18 anos",
-            "Texto inédito e original",
-            "Máximo de 2.000 palavras"
-          ],
-          "avaliacao": "Os textos serão avaliados por um painel de jurados experientes no campo literário.",
-          "contato": {
-            "email": "contato@concursodeescrita2023.com",
-            "telefone": "(11) 98765-4321"
-          }
-        }
-        ]
+        const url = `/concurso/lista-concursos/${this.$store.state.idUsuario}`
+        const { data } = await api.get(url);
         this.concursos = data;
-      } catch (error) {
-        console.log(error);
-      }
-    },
-    async loadTextos() {
-      try {
-        //const { data } = await api.get("/textos");
-        const data = [{
-          "inscricao": {
-            "nome": "Nome Completo",
-            "idade": 25,
-            "email": "exemplo@email.com",
-            "telefone": "(11) 98765-4321",
-            "endereco": "",
-            "Observacoes": "eu sou da escola tal"
-          },
-          "id": 1,
-          "titulo_obra": "O Despertar da Imaginação",
-          "texto": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing eli Lorem ipsum dolor sit amet, consectetur adipiscing eli Lorem ipsum dolor sit amet, consectetur adipiscing eli Lorem ipsum dolor sit amet, consectetur adipiscing eli Lorem ipsum dolor sit amet, consectetur adipiscing eli Lorem ipsum dolor sit amet, consectetur adipiscing eli Lorem ipsum dolor sit amet, consectetur adipiscing eli Lorem ipsum dolor sit amet, consectetur adipiscing eli Lorem ipsum dolor sit amet, consectetur adipiscing eli Lorem ipsum dolor sit amet, consectetur adipiscing eli Lorem ipsum dolor sit amet, consectetur adipiscing eli",
-          "nota": 9.5,
-          "categoria": ["Ficção", "Outro"]
-        }]
-        this.textos = data;
       } catch (error) {
         console.log(error);
       }
     },
     async login() {
       try {
-        this.$swal.showLoading();
+
         const { data } = await api.post("/auth/login", this.model);
-        this.$swal.close();
         console.log(data);
         this.$store.dispatch("login", data);
         this.$toast.success("Login realizado com sucesso");

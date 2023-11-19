@@ -107,7 +107,7 @@ export default {
         descricao: "",
         dataInicio: "",
         dataFim: "",
-        idEscola: this.$store.state.idUsuario,
+        idEscola: '1',
         idConcursoCategoria: "",
         idUsuarioAvaliadores: [],
       },
@@ -117,7 +117,8 @@ export default {
     };
   },
   async mounted() {
-    if (this.$store.state.role !== 'escola') {
+
+    if (this.$store.state.role !== 'ESCOLA') {
       this.$router.back();
     }
     await this.loadCategoria();
@@ -135,16 +136,18 @@ export default {
       }
 
       try {
-        //const { data } = await api.post("/concurso", this.model);
+        const { data } = await api.post("/concurso/cadastrar", this.model);
+        this.$toast.success("Concurso cadastrado com sucesso");
         this.$router.push("/competicoes");
       } catch (error) {
         console.log(error);
+        this.$toast.error("Erro ao cadastrar concurso");
       }
     },
     async loadAvaliadores() {
       try {
-        //const { data } = await api.get("/usuario/lista-avaliadores");
-        const data = [{ nome: "Avaliador 1", idUsuario: 1 }, { nome: "Avaliador 2", idUsuario: 2 }, { nome: "Avaliador 3", idUsuario: 3 }];
+        const { data } = await api.get("/usuario/lista-avaliadores");
+        //const data = [{ nome: "Avaliador 1", idUsuario: 1 }, { nome: "Avaliador 2", idUsuario: 2 }, { nome: "Avaliador 3", idUsuario: 3 }];
         this.avaliadores = data;
       } catch (error) {
         console.log(error);
@@ -152,8 +155,8 @@ export default {
     },
     async loadCategoria() {
       try {
-        //const { data } = await api.get("/concurso/lista-categorias");
-        const data = [{ descricao: "Ficção", idConcursoCategoria: 1 }, { descricao: "Não-ficção", idConcursoCategoria: 2 }, { descricao: "Outro", idConcursoCategoria: 3 }];
+        const { data } = await api.get("/concurso/lista-categorias");
+        //const data = [{ descricao: "Ficção", idConcursoCategoria: 1 }, { descricao: "Não-ficção", idConcursoCategoria: 2 }, { descricao: "Outro", idConcursoCategoria: 3 }];
         this.categorias = data;
       } catch (error) {
         console.log(error);
